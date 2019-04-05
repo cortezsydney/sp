@@ -1,3 +1,7 @@
+#source ./venv/bin/activate  # sh, bash, ksh, or zsh
+#python3 ./program/lstm.py /program/history/inflationHist.csv
+
+
 # univariate lstm example
 from numpy import array
 from keras.models import Sequential

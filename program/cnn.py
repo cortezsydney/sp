@@ -1,5 +1,5 @@
 #source ./venv/bin/activate  # sh, bash, ksh, or zsh
-#python3 ./program/lstm.py /historicalData/gsw.csv
+#python3 ./program/cnn.py /program/history/gsw.csv
 
 
 #univariate cnn example from (c)
