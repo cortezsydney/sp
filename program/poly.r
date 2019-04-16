@@ -1,5 +1,8 @@
-my_data <- read.csv("./poly/followers.csv", header=FALSE, col.names = c("X","Y"))
-x <- as.POSIXct(my_data$X, format="%m/%d/%Y")
+#Rscript --vanilla poly.r ./poly/lakers.csv %m/%d/%Y
+args = commandArgs(trailingOnly=TRUE)
+
+my_data <- read.csv(args[1], header=FALSE, col.names = c("X","Y"))
+x <- as.POSIXct(my_data$X, format=args[2])
 x <- as.numeric(x)
 
 attach(my_data)
@@ -34,9 +37,9 @@ while(TRUE){
     baseTemp = testTemp$r.squared
     res = testTemp$residuals
     print(baseTemp)
-    print(count)
   }else{
     lines(smooth.spline(x, predict(temp)), col="blue", lwd=3)
+    print("degree:"); print(count)
     break;
   }
 }
