@@ -1,0 +1,7 @@
+Actual Value:
+LSTM Prediction: 3661.052001953125
+CNN Prediction: 3694.688720703125
+ARIMA Prediction:  3720.88879411237
+WOC Prediction:  3849.47541389121
+Normalized Wisdom of the Crowd Prediction:  3660.16616284224
+Polynomial Regression Prediction:  1772.51406673648

@@ -1,0 +1,5 @@
+LSTM Prediction: 544.0
+CNN Prediction: 543.3975830078125
+WOC Prediction:  220.129707112971
+Normalized Wisdom of the Crowd Prediction:  88.2359843546284
+Polynomial Regression Prediction:  618.949494949495

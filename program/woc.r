@@ -18,3 +18,8 @@ ans = ans/((endIndex - startIndex) + 1)
 print(paste("Result off WOC:", mean(orderedData)))
 print(paste("Normalized Result of WOC:", ans))
 
+#write results to txt file
+write.table(paste("WOC Prediction: ", mean(orderedData)), file = args[2], 
+            append =  TRUE, quote = FALSE, sep = "\t",row.names = FALSE, col.names = FALSE)
+write.table(paste("Normalized Wisdom of the Crowd Prediction: ", ans), file = args[2], 
+            append =  TRUE, quote = FALSE, sep = "\t",row.names = FALSE, col.names = FALSE)

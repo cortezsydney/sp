@@ -1,0 +1,2 @@
+WOC Prediction:  991.675026123302
+Normalized Wisdom of the Crowd Prediction:  488.571056062581

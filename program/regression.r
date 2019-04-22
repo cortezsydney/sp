@@ -1,38 +1,71 @@
-library(ggplot2)
-my_data <- read.csv("bitcoinHist.csv", header=FALSE, col.names = c("X","Y"))
-my_data
+#Rscript --vanilla poly.r ./stat/lakers.csv ../lakers.txt D
+##This code is highly based on
+# Statistics, M. R. (2016, July 05). Polynomial Regression in R | R Tutorial 5.12 | MarinStatsLectures. 
+#    Retrieved April 12, 2019, from https://www.youtube.com/watch?v=ZYN0YD7UfK4
 
-theme_set(theme_bw())
+args = commandArgs(trailingOnly=TRUE)
+my_data <- read.csv(args[1], header=FALSE, col.names = c("X","Y"))
 
-pl <- ggplot(my_data) + geom_point(aes(x=my_data$X, y=my_data$Y), size=2, colour="#993399") + 
-  xlab("Speed (mph)") + ylab("Stopping distance (ft)")  
-print(pl)
+if (args[3] == "Y"){
+  x <- my_data$X
+}else if(args[3] == "D"){
+  x <- as.POSIXct(my_data$X, format="%m/%d/%Y")
+  x <- as.numeric(x)
+}
 
-#0
 attach(my_data)
-lm0 <- lm(my_data$Y ~ 1)
-mean(my_data$Y)
-#pl + geom_hline(yintercept=coef(lm0)[1],size=1, colour="#339900")
+summary(my_data)
+plot(x, my_data$Y, main = "Polynomial Regression", las=1)
 
-#1
-lm1 <- lm(my_data$Y ~ my_data$X, data=my_data)
-#coef(lm1)
-#summary(lm1)
-#confint(lm1)
-pl  + geom_abline(intercept=coef(lm1)[1],slope=coef(lm1)[2],size=1, colour="#339900")
-#par(mfrow = c(1, 2))
-#plot(lm1, which=c(1,2))
+model1 <- lm(my_data$Y ~ x)
+#abline(model, lwd=3, col="red")
+baseModel = round(summary(model1)$r.squared, digits = 4)
+print(baseModel)
 
-set.seed(100)
-n <- nrow(my_data)
-i.training <- sort(sample(n,round(n*0.8)))
-my_data.training <- my_data[i.training,]
-my_data.test  <- my_data[-i.training,]
+temp <- lm(my_data$Y ~ poly(x, degree=2, raw=TRUE))
+baseTemp = round(summary(temp)$r.squared, digits = 4)
+print(baseTemp)
 
-pred1a.test <- predict(lm1, newdata=my_data.test)
+count = 2
+b = x^count
+while(TRUE){
+  if (baseModel < baseTemp){
+    count = count + 1
+    model1 = temp
+    baseModel = round(summary(model1)$r.squared, digits = 4)
+    
+    temp <- lm(my_data$Y ~ poly(x, degree=count, raw = TRUE))
+    baseTemp = round(summary(temp)$r.squared, digits = 4)
+    print(paste0(baseModel, ": ", count))
+  }else{
+    summary(model1)
+    
+    break
+  } 
+}
 
-lm1.training <- lm(my_data$Y ~ my_data$X, data=my_data.training)
-pred1b.test <- predict(lm1.training, newdata=my_data.test)
+dfram
+if (args[3] == "Y"){
+  dfram <- data.frame('X' = c(my_data$X))
+}else if(args[3] == "D"){
+  dfram <- data.frame('X' = c(as.numeric(as.POSIXct(my_data$X, format="%m/%d/%Y"))))
+}
 
-data.frame(my_data, pred1a.test, pred1b.test)
-dist.test <- my_data.test$X
+dfram$Y <- c(my_data$Y)
+myFit <- lm(Y ~ poly(X, degree = count), data=dfram)
+ lines(smooth.spline(x, predict(myFit)), col = "blue", lwd=3)
+
+new.speed 
+if (args[3] == "Y"){
+  new.speed <- data.frame('X'=2018)
+}else if(args[3] == "D"){
+  new.speed <- data.frame('X' = c(as.numeric(as.POSIXct("01/13/2019", format="%m/%d/%Y"))))
+}
+
+res1 = predict(myFit, new.speed)
+
+summary(myFit)
+
+#write results to txt file
+res = paste("Polynomial Regression Prediction: ", res1)
+write.table(res, file = args[2], append =  TRUE, quote = FALSE, sep = "\t",row.names = FALSE, col.names = FALSE)
